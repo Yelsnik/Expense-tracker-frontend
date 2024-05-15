@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { NavService } from './nav.service';
 import { CommonModule } from '@angular/common';
@@ -11,10 +11,14 @@ import { CommonModule } from '@angular/common';
   styleUrl: './nav.component.css',
 })
 export class NavComponent {
-  load: boolean = false;
-  constructor(public nav: NavService) {}
+  @Output() eventEmit = new EventEmitter<boolean>();
+  navBar: boolean = true;
 
-  ngOnInit(): void {
-    this.load = true;
+  nav() {
+    this.navBar = !this.navBar;
+
+    this.eventEmit.emit(this.navBar);
   }
+
+  ngOnInit(): void {}
 }

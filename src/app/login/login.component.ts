@@ -1,18 +1,44 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { NavService } from '../nav/nav.service';
+import { Component } from '@angular/core';
+import { Login, LoginService } from './login.service';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
-  constructor(public nav: NavService) {}
+  // signInForm: FormGroup
+  constructor(
+    private loginService: LoginService,
+    private formBuilder: FormBuilder
+  ) {}
 
-  ngOnInit(): void {
-    this.nav.hide();
+  signInForm = this.formBuilder.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(8)]],
+  });
+
+  login(data: Login) {
+    this.loginService.signIn(data).subscribe({
+      error: (err) => {
+        console.error('Error with login:', err.message, err);
+      },
+      complete: () => {
+        console.log('complete');
+      },
+      next: (res: any) => {
+        console.log(res);
+      },
+    });
   }
+
+  ngOnInit(): void {}
 }

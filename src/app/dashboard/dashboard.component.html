@@ -1,4 +1,11 @@
 <div>
-  <app-nav></app-nav>
-  <app-home></app-home>
+  <app-nav (eventEmit)="getData($event)"></app-nav>
+  <app-home *ngIf="navBar"></app-home>
+  <div *ngIf="!navBar">
+    <p>Expenses</p>
+    <p>Reports</p>
+    <p>Add Expenses</p>
+    <p>My Profile</p>
+    <p>Sign Out</p>
+  </div>
 </div>
